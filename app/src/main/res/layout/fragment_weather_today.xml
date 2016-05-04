@@ -1,0 +1,27 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/activity_horizontal_margin"
+    tools:context="com.example.farheen.sunshine.WeatherToday">
+
+    <!-- TODO: Update blank fragment layout -->
+    <ImageView
+        tools:ignore="ContentDescription"
+        android:id="@+id/image_today"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:src="@drawable/art_clear" />
+
+    <TextView
+        android:id="@+id/weather_today"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:layout_toRightOf="@id/image_today"
+        android:layout_toEndOf="@id/image_today"
+        android:textSize="50sp"
+        android:text="@string/clear" />
+
+</RelativeLayout>
