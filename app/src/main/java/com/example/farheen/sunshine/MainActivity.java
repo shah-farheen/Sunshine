@@ -44,32 +44,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         weatherDescription = res.getStringArray(R.array.description);
 
         ListView list = (ListView) findViewById(R.id.mylist);
-        CustomAdapter adapter = new CustomAdapter(this,days,images,weatherDescription);
-        list.setAdapter(adapter);
         list.setOnItemClickListener(this);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-    // Changes
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -77,57 +54,5 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         TextView day = (TextView) row.getChildAt(1);
         TextView desc = (TextView) row.getChildAt(2);
         Toast.makeText(getApplicationContext(),day.getText().toString()+" is "+desc.getText().toString(),Toast.LENGTH_SHORT).show();
-    }
-}
-
-class MyViewHolder{
-    ImageView myImage;
-    TextView myDay;
-    TextView myDescription;
-    MyViewHolder(View row){
-        myImage = (ImageView) row.findViewById(R.id.weather_image);
-        myDay = (TextView) row.findViewById(R.id.weather_title);
-        myDescription = (TextView) row.findViewById(R.id.description);
-    }
-}
-
-class CustomAdapter extends ArrayAdapter<String>{
-
-    Context context;
-    int[] images;
-    String[] dayArray;
-    String[] descriptionArray;
-    CustomAdapter(Context c, String[] day, int[] imgs, String[] desc){
-
-        super(c, R.layout.list_items_3, R.id.weather_title, day);
-        this.context = c;
-        this.images = imgs;
-        this.dayArray = day;
-        this.descriptionArray = desc;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        View row = convertView;
-        MyViewHolder holder;
-        if (row==null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            row = inflater.inflate(R.layout.list_items_3, parent, false);
-            holder = new MyViewHolder(row);
-            row.setTag(holder);
-            Log.d("Tag", "Creating new row");
-        }
-
-       else {
-            holder = (MyViewHolder) row.getTag();
-            Log.d("Tag", "Recycling");
-        }
-
-        holder.myImage.setImageResource(images[position]);
-        holder.myDay.setText(dayArray[position]);
-        holder.myDescription.setText(descriptionArray[position]);
-
-        return row;
     }
 }
