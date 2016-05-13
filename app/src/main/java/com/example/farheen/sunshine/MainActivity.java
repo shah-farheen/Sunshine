@@ -2,26 +2,20 @@ package com.example.farheen.sunshine;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity{
 
     String days[] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
     String weatherDescription[];
@@ -31,8 +25,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         WeatherToday frag = new WeatherToday();
         FragmentManager manager = getFragmentManager();
@@ -43,16 +35,36 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Resources res = getResources();
         weatherDescription = res.getStringArray(R.array.description);
 
+        List<WeatherListModel> data = setData(images,days,weatherDescription);
+        CustomAdapter adapter = new CustomAdapter(this,R.layout.list_items_3,data);
+
         ListView list = (ListView) findViewById(R.id.mylist);
-        list.setOnItemClickListener(this);
+        list.setAdapter(adapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView day = (TextView) view.findViewById(R.id.weather_title);
+                TextView description = (TextView) view.findViewById(R.id.description);
+                Toast.makeText(getApplicationContext(),day.getText().toString()+" is "+description.getText().toString(),Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public List<WeatherListModel> setData(int[] images, String[] days, String[] weatherDescription){
+        List<WeatherListModel> data = new ArrayList<>();
+        for(int i=0;i<days.length;i++){
+            WeatherListModel current = new WeatherListModel();
+            current.weatherImage = images[i];
+            current.weatherTitle = days[i];
+            current.description = weatherDescription[i];
+            data.add(current);
+        }
+        return data;
+    }
+
+    public static void getData(String got){
+        Intent intent = new Intent(,SecondActivity.class);
     }
 
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        RelativeLayout row = (RelativeLayout) view;
-        TextView day = (TextView) row.getChildAt(1);
-        TextView desc = (TextView) row.getChildAt(2);
-        Toast.makeText(getApplicationContext(),day.getText().toString()+" is "+desc.getText().toString(),Toast.LENGTH_SHORT).show();
-    }
 }
