@@ -15,7 +15,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements CustomAdapter.Communicator{
 
     String days[] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
     String weatherDescription[];
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity{
         weatherDescription = res.getStringArray(R.array.description);
 
         List<WeatherListModel> data = setData(images,days,weatherDescription);
-        CustomAdapter adapter = new CustomAdapter(this,R.layout.list_items_3,data);
+        CustomAdapter adapter = new CustomAdapter(this,R.layout.list_items_3,data,this);
 
         ListView list = (ListView) findViewById(R.id.mylist);
         list.setAdapter(adapter);
@@ -62,9 +62,8 @@ public class MainActivity extends AppCompatActivity{
         return data;
     }
 
-    public static void getData(String got){
-        Intent intent = new Intent(,SecondActivity.class);
+    @Override
+    public void sendData(String data) {
+        Toast.makeText(getApplicationContext(),data,Toast.LENGTH_SHORT).show();
     }
-
-
 }

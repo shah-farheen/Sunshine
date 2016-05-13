@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -19,13 +18,20 @@ public class CustomAdapter extends ArrayAdapter<WeatherListModel>{
 
     private LayoutInflater inflater;
     private Context mContext;
+    public Communicator communicator;
     List<WeatherListModel> data;
 
-    public CustomAdapter(Context context, int resource, List<WeatherListModel> data) {
+    public interface Communicator{
+        void sendData(String data);
+    }
+
+
+    public CustomAdapter(Context context, int resource, List<WeatherListModel> data,Communicator communicator) {
         super(context, resource, data);
         mContext = context;
         inflater = LayoutInflater.from(mContext);
         this.data = data;
+        this.communicator = communicator;
     }
 
     static class MyHolder{
@@ -65,7 +71,7 @@ public class CustomAdapter extends ArrayAdapter<WeatherListModel>{
         holder.buttonClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                communicator.sendData(toSend);
             }
         });
 
